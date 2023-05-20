@@ -1,0 +1,71 @@
+public static void main(String[] args) {
+        int numRows = 5;
+
+        System.out.println("Printing pascal triangle using Iteration:");
+        printPascalTriangleUsingIteration(numRows);
+
+        System.out.println("Printing pascal triangle using Recursion:");
+        printPascalTriangleUsingRecursion(numRows);
+
+        System.out.println("Printing pascal triangle using Memoization:");
+        printPascalTriangleUsingMemoization(numRows);
+    }
+
+    public static void printPascalTriangleUsingIteration(int numRows) {
+        for (int i = 0; i < numRows; i++) {
+            int number = 1;
+
+            for (int j = 0; j <= i; j++) {
+                System.out.print(number + " ");
+                number = number * (i - j) / (j + 1);
+            }
+
+            System.out.println();
+        }
+    }
+
+    public static void printPascalTriangleUsingRecursion(int numRows) {
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j <= i; j++) {
+                System.out.print(calculatePascalValue(i, j) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void printPascalTriangleUsingMemoization(int numRows) {
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j <= i; j++) {
+                System.out.print(calculatePascalValueUsingMap(i, j, new HashMap<>()) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static int calculatePascalValue(int row, int column) {
+        if (column == 0 || column == row) {
+            return 1;
+        } else {
+            return calculatePascalValue(row - 1, column - 1) + calculatePascalValue(row - 1, column);
+        }
+    }
+
+    public static int calculatePascalValueUsingMap(int row, int column, Map<String, Integer> memo) {
+        String key = row + "-" + column;
+
+        if (memo.containsKey(key)) {
+            return memo.get(key);
+        }
+
+        int value;
+
+        if (column == 0 || column == row) {
+            value = 1;
+        } else {
+            value = calculatePascalValueUsingMap(row - 1, column - 1, memo) + calculatePascalValueUsingMap(row - 1, column, memo);
+        }
+
+        memo.put(key, value);
+        return value;
+    }
+    
